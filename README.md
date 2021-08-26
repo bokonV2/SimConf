@@ -65,3 +65,7 @@ config.set_default() #use default_atr
 ```python
 config.print_all()
 ```
+
+### Support
+ - **Telegramm** https://t.me/Rahazb
+ - **Email** bokon2014@yandex.ru
