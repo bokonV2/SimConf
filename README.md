@@ -11,7 +11,7 @@ pip install simconf
 ## Documentation
 ### Init
 ```python
-from simconf.tools import SimConf
+from SimConf import SimConf
 config = SimConf(filename, default_atr, ensure_ascii, load_conf)
 ```
 #### filename
