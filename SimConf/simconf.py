@@ -1,4 +1,5 @@
 import json
+from property import (CustomProperty, StrProperty, BoolProperty)
 
 
 class SimConf:
@@ -27,9 +28,10 @@ class SimConf:
                  ensure_ascii=True, load_conf=True
                  ):
 
-        self._name_property(filename)
-        self._default_property(default_atr)
-        self._ascii_property(ensure_ascii)
+        self.filename = StrProperty(filename)
+        self.default_atr = CustomProperty(default_atr, (dict, list))
+        self.ensure_ascii = BoolProperty(ensure_ascii)
+        load_conf = BoolProperty(load_conf)
 
         if load_conf:
             self.data = self.load()
@@ -48,24 +50,6 @@ class SimConf:
     def __setitem__(self, key, val):
         self.data[key] = val
         self.save()
-
-    def _name_property(self, name):
-        if type(name) == type(str()):
-            self.filename = name
-        else:
-            raise AttributeError("filename use only string")
-
-    def _default_property(self, obj):
-        if type(obj) == type(list()) or type(obj) == type(dict()):
-            self.default_atr = obj
-        else:
-            raise AttributeError("default_atr use only dict or list")
-
-    def _ascii_property(self, obj):
-        if type(obj) == type(bool()):
-            self.ensure_ascii = obj
-        else:
-            raise AttributeError("ensure_ascii use only bool")
 
     def load(self):
         try:
@@ -97,7 +81,7 @@ class SimConf:
 
 if __name__ == '__main__':
     default_atr = [1,2,3]
-    cnf = SimConf(filename="test", default_atr=default_atr)
+    cnf = SimConf(filename="35", default_atr=default_atr)
     # cnf["tt"] = [1,2,3,4, {"atr": 12., "booll":False}]
     # print(cnf["tt"][-1]["booll"])
     cnf.print_all()

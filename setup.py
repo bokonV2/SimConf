@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='SimConf',
-    version='0.0.6',
+    version='0.0.7',
     author='bokonV2',
     author_email='bokon2014@yandex.ru',
     url='https://github.com/bokonV2/SimConf',
