@@ -1,6 +1,7 @@
 from setuptools import setup, find_packages
 import pathlib
-
+# python setup.py sdist
+# twine upload dist/*
 here = pathlib.Path(__file__).parent.resolve()
 
 with open("README.md", "r") as fh:
@@ -8,7 +9,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='SimConf',
-    version='0.0.7',
+    version='0.1.3',
     author='bokonV2',
     author_email='bokon2014@yandex.ru',
     url='https://github.com/bokonV2/SimConf',

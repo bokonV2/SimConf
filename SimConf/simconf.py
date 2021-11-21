@@ -1,5 +1,5 @@
 import json
-from property import (CustomProperty, StrProperty, BoolProperty)
+from propertys import *
 
 
 class SimConf:
@@ -31,33 +31,95 @@ class SimConf:
         self.filename = StrProperty(filename)
         self.default_atr = CustomProperty(default_atr, (dict, list))
         self.ensure_ascii = BoolProperty(ensure_ascii)
-        load_conf = BoolProperty(load_conf)
+        self.load_conf = BoolProperty(load_conf)
 
-        if load_conf:
+        if self.load_conf:
             self.data = self.load()
         else:
             self.data = self.default_atr
 
+    def __str__(self):
+        return self.__repr__()
+
+    def __del__(self):
+        try:
+            self.save()
+        except:
+            print(f"{self.filename} DONT SAVE")
+
+    def __iter__(self):
+        return self.data.__iter__()
+
     def __setattr__(self, obj, val):
         super().__setattr__(obj, val)
-        if obj == "filename" or obj == "default_atr" or obj == "ensure_ascii":
+        if obj == "filename" or\
+            obj == "default_atr" or\
+            obj == "ensure_ascii" or\
+            obj == "load_conf":
             return
         self.save()
 
     def __getitem__(self, key):
+        # print(f"Get_item {key} {args}")
         return self.data[key]
 
     def __setitem__(self, key, val):
+        # print(f"{key}\t{val}")
         self.data[key] = val
         self.save()
+
+    def __len__(self):
+        return len(self.data)
+
+    def get(self, key):
+
+        if isinstance(self.data, dict):
+            return self.data.get(key)
+        else:
+            try:
+                return self.data[key]
+            except IndexError:
+                return None
+            except TypeError:
+                raise TypeError("For dict use only index")
+
+    def keys(self):
+        if isinstance(self.data, dict):
+            return self.data.keys()
+        else:
+            return [value[0] for value in enumerate(self.data)]
+
+    def values(self):
+        if isinstance(self.data, dict):
+            return self.data.values()
+        else:
+            return self.data
+
+    def items(self):
+        if isinstance(self.data, dict):
+            return self.data.items()
+        else:
+            return enumerate(self.data)
+
+    def append(self, key, add=None):
+        if add == None:
+            if isinstance(self.data, list):
+                self.data.append(key)
+                self.save()
+            else:
+                raise AttributeError()
+        else:
+            if isinstance(self.data, dict):
+                self.data[key] = add
+            else:
+                raise AttributeError()
 
     def load(self):
         try:
             with open(f"{self.filename}.json", "r", encoding="UTF-8") as file:
-                data = json.load(file)
+                return json.load(file)
         except:
-            data = self.default()
-        return data
+            return self.default_atr
 
     def save(self):
         with open(f"{self.filename}.json", "w", encoding="UTF-8") as file:
@@ -66,22 +128,9 @@ class SimConf:
     def set_default(self):
         self.data = self.default_atr
 
-    def default(self):
-        data = self.default_atr
-        return data
+    def get_default(self):
+        return self.default_atr
 
     def print_all(self):
-        if type(self.data) == type(dict()):
-            for key, value in self.data.items():
-                print(key, value, sep=" <===> ")
-        else:
-            for value in self.data:
-                print(value)
-
-
-if __name__ == '__main__':
-    default_atr = [1,2,3]
-    cnf = SimConf(filename="35", default_atr=default_atr)
-    # cnf["tt"] = [1,2,3,4, {"atr": 12., "booll":False}]
-    # print(cnf["tt"][-1]["booll"])
-    cnf.print_all()
+        for key, value in self.items():
+            print(key, value, sep=" <===> ")
