@@ -1,7 +1,7 @@
 import unittest
 import collections
 
-from simconf import SimConf
+from SimConf import SimConf
 
 
 class TestSimconfDict(unittest.TestCase):

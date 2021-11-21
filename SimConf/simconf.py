@@ -1,5 +1,5 @@
 import json
-from propertys import *
+from SimConf.propertys import *
 
 
 class SimConf:
